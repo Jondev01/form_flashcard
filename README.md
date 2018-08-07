@@ -1,1 +1,1 @@
-Project to practice and form validation and database backend programming using php
+Project to practice form validation and database backend programming using php
