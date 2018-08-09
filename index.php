@@ -59,9 +59,7 @@
 		}
 	}
 ?>
-
-
-
+<!--Here html starts -->
 <?php include 'include/header.php'; ?>
 
 	<div class="container">
