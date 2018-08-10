@@ -1,4 +1,5 @@
 <?php
+	session_start();
 	//message variables
 	$msg='';
 	$msgClass='';
@@ -25,15 +26,19 @@
 				echo $row['username'].'<br>';
 			}*/
 			//Use prepared statements to insert
-			$sql = 'SELECT password FROM users WHERE email=:email';
+			$sql = 'SELECT id, password FROM users WHERE email=:email';
 			$stmt = $pdo->prepare($sql);
 			//Check if record exists and password is correct
 			$stmt->execute(['email'=>$email]);
 			$row = $stmt->fetch();
 			if($stmt->rowCount()>0 && $row->password == $user_password){
 				//account exists and password correct
+				$_SESSION['user_id'] = $row->id;
+				$_SESSION['user_email'] = $email;
 				$msg = 'Log in successfull';
 				$msgClass = 'alert-success'; 
+				header("Location: logged_in.php");
+				die();
 			} else{
 				$msg = 'Email or password incorrect';
 				$msgClass = 'alert-danger'; 
@@ -56,9 +61,9 @@
 	   		<input id="inputEmail" type="text" name="email" class="form-control" value="<?php echo isset($_POST['email']) ? $email : '';?>" placeholder="Email address"><br>
 	   		<label class="sr-only">Password</label>
 	   		<input id="inputPassword" type="password" name="password" class="form-control" placeholder="Password"><br>
-	   		<button type="submit" name="submit" class="btn">Submit</button>
+	   		<button type="submit" name="submit" class="btn">Log In</button>
+	   		<a href="forgot.php">I forgot my password</a>
+	   		<p>Don't have an account? <a href="index.php">Sign up</a></p>
 	   	</form>
 	</div>
-
-
 <?php include 'include/footer.php'; ?>

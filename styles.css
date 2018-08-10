@@ -8,7 +8,7 @@ body {
 	padding: 0;
 }
 
-.form-signin {
+.form-signin{
 	max-width:320px;
 	padding:15px;
 	margin:0 auto;
@@ -33,6 +33,13 @@ body {
 
 .alert-danger {
 	background-color: #ff0000;
+	color:#ffffff;
+	padding:20px;
+	font-size:16px;
+}
+
+.alert-success {
+	background-color: #00ff00;
 	color:#ffffff;
 	padding:20px;
 	font-size:16px;
