@@ -21,7 +21,7 @@
 		$stmt->execute(['userId'=>$_SESSION['user_id']]);
 		?>
 		<h4>Choose a deck</h4>
-		<select id="deckSelect">
+		<select id="deckSelect" onChange="clearCard()">
 			<?php while($row = $stmt->fetch()){ ?>
 				<option value="<?php echo $row->name; ?>">
 					<?php echo $row->name; ?>
@@ -47,11 +47,12 @@
 		</form>
 	</div>
 
-	<div class="card" onclick="nextCard()">
+	<div id="card_container" class="card" onclick="flipCard()">
 		<div id="current_card">
-		fakjdhkadjka
 		</div>
 	</div>
+	<button id="newCardButton" onclick="nextCard()">Next Card</button>
+	<button id="deleteCard" onclick="deleteCard()">Delete Card</button>
 </div>
 <script src="main.js"></script>
 <?php include 'include/footer.php' ?>

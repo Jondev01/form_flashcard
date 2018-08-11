@@ -1,6 +1,6 @@
 <?php
 	session_start();
-	$name = htmlspecialchars($_REQUEST['q']);
+	$text = htmlspecialchars($_REQUEST['t']);
 	//access flashcard db
 	$host = 'localhost';
 	$user = 'root';
@@ -11,9 +11,16 @@
 	//create PDO instance and set default fetch to object
 	$pdo = new PDO($dsn, $user, $password);
 	$pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
-	//query to select all decks of the user
-	//$sql = 'INSERT INTO decks(userId, name) VALUES (:userId, :name)';
-	$sql = 'INSERT INTO decks(userId, name) SELECT :userId, :name WHERE NOT EXISTS (SELECT 1 FROM decks WHERE userId=:userId AND name=:name)';
+	//fetch front text and card id
+	$sql = 'SELECT front, back FROM cards WHERE id=:id';
 	$stmt = $pdo->prepare($sql);
-	$stmt->execute(['userId'=>$_SESSION['user_id'], 'name'=>$name]);
+	$stmt->execute(['id'=>$_SESSION['card_id']]);
+	$card = $stmt->fetch();
+	if($card->front == $text){
+		echo json_encode(array("back", $card->back));
+	}
+	else if($card->back == $text){
+		echo json_encode(array("front",$card->front));
+	}
+	//echo json_encode($cards);
 ?>

@@ -1,6 +1,5 @@
 <?php
 	session_start();
-	$name = htmlspecialchars($_REQUEST['q']);
 	//access flashcard db
 	$host = 'localhost';
 	$user = 'root';
@@ -11,9 +10,13 @@
 	//create PDO instance and set default fetch to object
 	$pdo = new PDO($dsn, $user, $password);
 	$pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
-	//query to select all decks of the user
-	//$sql = 'INSERT INTO decks(userId, name) VALUES (:userId, :name)';
-	$sql = 'INSERT INTO decks(userId, name) SELECT :userId, :name WHERE NOT EXISTS (SELECT 1 FROM decks WHERE userId=:userId AND name=:name)';
+	//fetch front text and card id
+	$sql = 'DELETE FROM cards WHERE id=:id AND userId=:userId';
 	$stmt = $pdo->prepare($sql);
-	$stmt->execute(['userId'=>$_SESSION['user_id'], 'name'=>$name]);
+	if($stmt->execute(['id'=>$_SESSION['card_id'], 'userId'=>$_SESSION['user_id']])) {
+		unset($_SESSION['card_id']);
+		echo true;
+	}
+	else
+		echo false;
 ?>
