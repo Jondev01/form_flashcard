@@ -58,7 +58,7 @@
 	   	<form class="form-signin" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 	   		<label class="sr-only">Email</label>
 	   		<input id="inputEmail" type="text" name="email" class="form-control" value="<?php echo isset($_POST['email']) ? $email : '';?>" placeholder="Email address">
-	   		<button type="submit" name="submit" class="btn">Send Password</button><a href="login.php">Log in</a>
+	   		<button type="submit" name="submit" class="btn">Send Password</button><a href="index.php">Log in</a>
 	   	</form>
 	</div>
 

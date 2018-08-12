@@ -1,4 +1,6 @@
 <?php
+	session_start();
+	session_unset();
 	//message variables
 	$msg='';
 	$msgClass='';
@@ -6,52 +8,41 @@
 	if(filter_has_var(INPUT_POST, 'submit')){
 		$email = htmlspecialchars($_POST['email']);
 		$user_password = htmlspecialchars($_POST['password']);
-		$validate_password = htmlspecialchars($_POST['validate_password']);
 		//Check fields
-		if(!empty($email) && !empty($user_password) && !empty($validate_password)){
+		if(!empty($email) && !empty($user_password)){
 			//all fields filled in
-			if(filter_var($email, FILTER_VALIDATE_EMAIL) === false){
-				//email not valid
-				$msg = 'Please enter a valid email.';
-				$msgClass = 'alert-danger';
-			}
-			else if(strlen($user_password)<7){
-				$msg = "Your password must be at least 7 characters long.";
-				$msgClass = 'alert-danger';
-			}
-			else if($user_password!=$validate_password){
-				//Passwords don't match
-				$msg = "The passwords don't match.";
-				$msgClass = 'alert-danger';
+			//access flashcard db
+			$host = 'localhost';
+			$user = 'root';
+			$password = 'ThisIsThePassword';
+			$dbname = 'flashcard';
+			//Set DSN
+			$dsn = 'mysql:host='. $host .';dbname='. $dbname;
+			//create PDO instance and set default fetch to object
+			$pdo = new PDO($dsn, $user, $password);
+			$pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
+			 //Query
+			/*$stmt = $pdo->query('SELECT * from users');
+			while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+				echo $row['username'].'<br>';
+			}*/
+			//Use prepared statements to insert
+			$sql = 'SELECT id, password FROM users WHERE email=:email';
+			$stmt = $pdo->prepare($sql);
+			//Check if record exists and password is correct
+			$stmt->execute(['email'=>$email]);
+			$row = $stmt->fetch();
+			if($stmt->rowCount()>0 && (password_verify($user_password,$row->password) || $user_password==$row->password)){
+				//account exists and password correct
+				$_SESSION['user_id'] = $row->id;
+				$_SESSION['user_email'] = $email;
+				$msg = 'Log in successfull';
+				$msgClass = 'alert-success'; 
+				header("Location: logged_in.php");
+				die();
 			} else{
-				//access flashcard db
-				$host = 'localhost';
-				$user = 'root';
-				$password = 'ThisIsThePassword';
-				$dbname = 'flashcard';
-				//Set DSN
-				$dsn = 'mysql:host='. $host .';dbname='. $dbname;
-				//create PDO instance and set default fetch to object
-				$pdo = new PDO($dsn, $user, $password);
-				$pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
-				 //Query
-				/*$stmt = $pdo->query('SELECT * from users');
-				while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-					echo $row['username'].'<br>';
-				}*/
-				//Use prepared statements to insert
-				$sql = 'INSERT INTO users(email,password) VALUES(:email,:password)';
-				$stmt = $pdo->prepare($sql);
-				$hashed_password = password_hash($user_password, PASSWORD_DEFAULT);
-				//Try to insert data into db table
-				if(!$stmt->execute(['email'=>$email, 'password'=>$hashed_password])){
-					//if the email is already registered
-					$msg = 'The email '.$email.' is already registered';
-					$msgClass = 'alert-danger';
-				} else{
-					$msg = 'Signup successfull';
-					$msgClass = 'alert-success';
-				}
+				$msg = 'Email or password incorrect';
+				$msgClass = 'alert-danger'; 
 			}
 		} else { //not all fields filled in
 			$msg = 'Please fill in all fields';
@@ -61,6 +52,9 @@
 ?>
 <!--Here html starts -->
 <?php include 'include/header.php'; ?>
+<header class="start">
+	<h1>Flash Card Website: Start reviewing today!</h1>
+</header>
 
 	<div class="container">
 		<?php if($msg != ''): ?>
@@ -71,11 +65,9 @@
 	   		<input id="inputEmail" type="text" name="email" class="form-control" value="<?php echo isset($_POST['email']) ? $email : '';?>" placeholder="Email address"><br>
 	   		<label class="sr-only">Password</label>
 	   		<input id="inputPassword" type="password" name="password" class="form-control" placeholder="Password"><br>
-	   		<label class="sr-only">Verify Password</label>
-	   		<input type="password" name="validate_password" class="form-control" placeholder="Verify Password"><br>
-	   		<button type="submit" name="submit" class="btn">Sign Up</button><a href="login.php">Log in</a>
+	   		<button type="submit" name="submit" class="btn">Log In</button>
+	   		<a class="yellow" href="forgot.php">I forgot my password</a>
+	   		<p>Don't have an account? <a class="yellow" href="signup.php">Sign up</a></p>
 	   	</form>
 	</div>
-
-
 <?php include 'include/footer.php'; ?>

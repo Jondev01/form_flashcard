@@ -28,9 +28,9 @@
 			<li>Welcome <span id="user_name"><?php echo $user_email ?></li>
 			<span class="uppercase">
 				<br class="defaultHidden">
-				<li><a id="current" href="logged_in.php">Practice</a></li>
+				<li><a id="current" href="#">Practice</a></li>
 				<li><a href="edit_decks.php">Edit Decks</a></li>
-				<li><a href="login.php">Log out</a></li>
+				<li><a href="index.php">Log out</a></li>
 			</span>
 		</ul>
 	</div>
@@ -52,6 +52,7 @@
 				</option>	
 			<?php }?> 
 		</select>
+
 		<button id="nextCardButton" class="btn" onclick="nextCard()">Next Card</button>
 	</div>
 	<!-- Display the card -->

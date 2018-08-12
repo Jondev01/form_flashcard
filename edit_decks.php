@@ -29,8 +29,8 @@
 			<span class="uppercase">
 				<br class="defaultHidden">
 				<li><a href="logged_in.php">Practice</a></li>
-				<li><a id="current" href="edit_decks.php">Edit Decks</a></li>
-				<li><a href="login.php">Log out</a></li>
+				<li><a id="current" href="#">Edit Decks</a></li>
+				<li><a href="index.php">Log out</a></li>
 			</span>
 		</ul>
 	</div>
