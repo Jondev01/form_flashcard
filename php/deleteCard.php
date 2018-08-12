@@ -1,5 +1,10 @@
 <?php
 	session_start();
+	$cardId;
+	if(isset($_REQUEST['c']))
+		$cardId = htmlspecialchars($_REQUEST['c']);
+	else
+		$cardId = $_SESSION['card_id'];
 	//access flashcard db
 	$host = 'localhost';
 	$user = 'root';
@@ -13,7 +18,7 @@
 	//fetch front text and card id
 	$sql = 'DELETE FROM cards WHERE id=:id AND userId=:userId';
 	$stmt = $pdo->prepare($sql);
-	if($stmt->execute(['id'=>$_SESSION['card_id'], 'userId'=>$_SESSION['user_id']])) {
+	if($stmt->execute(['id'=>$cardId, 'userId'=>$_SESSION['user_id']])) {
 		unset($_SESSION['card_id']);
 		echo true;
 	}

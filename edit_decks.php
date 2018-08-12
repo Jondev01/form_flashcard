@@ -28,8 +28,8 @@
 			<li>Welcome <span id="user_name"><?php echo $user_email ?></li>
 			<span class="uppercase">
 				<br class="defaultHidden">
-				<li><a id="current" href="logged_in.php">Practice</a></li>
-				<li><a href="edit_decks.php">Edit Decks</a></li>
+				<li><a href="logged_in.php">Practice</a></li>
+				<li><a id="current" href="edit_decks.php">Edit Decks</a></li>
 				<li><a href="login.php">Log out</a></li>
 			</span>
 		</ul>
@@ -38,26 +38,45 @@
 <!-- Put content into a container -->
 <div class="container">
 	<!-- Edit the deck -->
-	<div class="deck_control">
+	<div>
 		<?php //access db
-		$sql = 'SELECT name FROM decks WHERE userId = :userId';
+		$sql = 'SELECT id,name FROM decks WHERE userId = :userId';
 		$stmt = $pdo->prepare($sql);
 		$stmt->execute(['userId'=>$_SESSION['user_id']]);
 		?>
-		<select id="deckSelect" class = "btn" onChange="nextCard()">
+		<select id="deckSelect" class = "btn" onChange="updateCardList()">
 			<option value="0" selected disabled>Choose a deck</option>
 			<?php while($row = $stmt->fetch()){ ?>
-				<option value="<?php echo $row->name; ?>">
+				<option value="<?php echo $row->id; ?>">
 					<?php echo $row->name; ?>
 				</option>	
 			<?php }?> 
 		</select>
-		<button id="nextCardButton" class="btn" onclick="nextCard()">Next Card</button>
+		<button id="deleteDeck" class="btn" onclick="deleteDeck()">Delete Deck</button>
 	</div>
-	<!-- Display the card -->
-	<div id="card_container" class="card" onclick="flipCard()">
-		<div id="current_card">
-		</div>
+	<div class="listOfCards">
+			<h3 class="yellow">List of Cards</h3>
+			<select multiple id="cardSelect">
+			</select>
+			<button id="deleteCard" class="btn" onclick="deleteCards()">Delete Card</button>
+	</div>
+	<div class="top-margin">
+		<!-- Add deck -->
+		<form class="form-signin inline-block">
+			<h3 class="yellow">New Deck</h3>
+			<label class="sr-only">Name of deck</label>
+		   	<input id="newDeckName" type="text" name="deck" class="form-control" placeholder="Name of deck"><br>
+			<button class="btn" onclick="addDeck(1)">Add Deck</button>
+		</form> <br>
+		<!-- add card -->
+		<form id="addCard" class="form-signin inline-block" onsubmit="return addCard(1)">
+			<h3 class="yellow">New Card</h3>
+			<label class="sr-only">Front</label>
+		   	<input id="front" type="text" name="front" class="form-control" placeholder="Front"><br>
+		   	<label class="sr-only">Back</label>
+		   	<input id="back" type="text" name="back" class="form-control" placeholder="Back">
+		   	<input type="submit" class="btn" value="Add Card"/>
+		</form>
 	</div>
 </div>
 <script src="main.js"></script>

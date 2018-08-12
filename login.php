@@ -1,5 +1,6 @@
 <?php
 	session_start();
+	session_unset();
 	//message variables
 	$msg='';
 	$msgClass='';
@@ -31,7 +32,7 @@
 			//Check if record exists and password is correct
 			$stmt->execute(['email'=>$email]);
 			$row = $stmt->fetch();
-			if($stmt->rowCount()>0 && $row->password == $user_password){
+			if($stmt->rowCount()>0 && (password_verify($user_password,$row->password) || $user_password==$row->password)){
 				//account exists and password correct
 				$_SESSION['user_id'] = $row->id;
 				$_SESSION['user_email'] = $email;

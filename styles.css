@@ -1,17 +1,69 @@
 body {
-	background-color: #eeeeee;
+	position:relative;
+	min-height: 100%;
+ 	 min-height: 100vh;
+	background-color: #444;
+	color:#fff;
+	margin:0;
+	padding:0px 0px 10px 0px;
+	overflow:hidden;
 }
 
+header{
+	background-color: black;
+	color: white;
+	padding-top: 10px;
+	padding-bottom: 10px;
+
+}
+a{
+	text-decoration:none;
+	color:white;
+}
+a:hover{
+	opacity: 0.5;
+} 
+ul{
+	list-style-type:none;
+	padding:0;
+	margin:0;
+}
+li{
+	display:inline-block;
+	margin-right: 20px;
+}
+li #user_name{
+	color:yellow;
+}
 .container {
 	width:80%;
 	margin: 0 auto;
 	padding: 0;
 }
 
+#current{
+	color:#3369ff;
+}
+
+.defaultHidden{
+	display:none;
+}
+.uppercase{
+	text-transform: uppercase;
+}
+
+.yellow{
+	color: yellow;
+}
+
 .form-signin{
-	max-width:320px;
-	padding:15px;
+	width:220px;
+	padding:15px 15px 15px 0px;
 	margin:0 auto;
+}
+
+.inline-block{
+	display:inline-block;
 }
 
 .form-signin .form-control {
@@ -46,12 +98,16 @@ body {
 }
 
 .btn {
-	width:100%;
 	height:auto;
 	font-size: 16px;
-	padding: 10px;
+	padding: 5px;
+	margin-right: 5px;
 	background-color: #3369ff;
 	color: #ffffff;
+}
+
+.btn:hover{
+	opacity:0.8;
 }
 
 .sr-only {
@@ -68,19 +124,100 @@ body {
 .card {
 	position:relative;
 	width:100%;
-	height:20rem;
+	height:80vh;
+	line-height: 80vh;
 	background-color: white;
 	text-align:center;
-	margin: 0 auto;
+	border:5px solid black;
+}
+.listOfCards{
+	float:right;
+	clear:both;
+	width: 25vw;
+	height: 50vh;
+}
+.center{
+	text-align: center;
+}
+
+.top-margin{
+	margin-top:2rem;
+}
+
+footer{
+	position:absolute;
+	right:0;
+	bottom:0;
+	left:0;
+
+    width: 100%;
+    color: white;
+    text-align: center;
+	}
+button#nextCardButton{
+	float:right;
+	margin-right:0;
+}
+
+#cardSelect{
+	background-color: white;
+	color: black;
+	font-size: 20px;
+	width: 100%;
+	height: 100%;
+	display:block;
 }
 
 #current_card{
+	color:black;
 	font-size: 80px;
 }
 
-/*#newCardButton{
-	position:absolute;
-	bottom:0;
-	left: 50%;
-	right: 50%;
-}*/
+@media screen and (max-width:768px){
+	body{
+		font-size:12px;
+		overflow:visible;
+	}
+
+	header{
+		padding-top:5px;
+		padding-bottom:5px;
+	}
+
+	li{
+		margin-right:
+		10px;
+	}
+	.listOfCards{
+		float:none;
+		width: 100%;
+		height: 15vh;
+	}
+	.defaultHidden{
+		display:initial;
+	}
+	.form-signin .form-control {
+	position: relative;
+	width:100%;
+	height: auto;
+	box-sizing: border-box;
+	padding: 5px;
+	font-size: 12px;
+	}
+
+	#cardSelect{
+	font-size: 12px;
+	width: 100%;
+	height: 100%;
+	}
+
+	.btn{
+		font-size:12px;
+		padding:2px;
+	}
+
+	#current_card{
+	font-size: 40px;
+	}
+
+}

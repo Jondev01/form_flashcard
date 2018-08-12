@@ -42,8 +42,9 @@
 				//Use prepared statements to insert
 				$sql = 'INSERT INTO users(email,password) VALUES(:email,:password)';
 				$stmt = $pdo->prepare($sql);
+				$hashed_password = password_hash($user_password, PASSWORD_DEFAULT);
 				//Try to insert data into db table
-				if(!$stmt->execute(['email'=>$email, 'password'=>$user_password])){
+				if(!$stmt->execute(['email'=>$email, 'password'=>$hashed_password])){
 					//if the email is already registered
 					$msg = 'The email '.$email.' is already registered';
 					$msgClass = 'alert-danger';
@@ -72,7 +73,7 @@
 	   		<input id="inputPassword" type="password" name="password" class="form-control" placeholder="Password"><br>
 	   		<label class="sr-only">Verify Password</label>
 	   		<input type="password" name="validate_password" class="form-control" placeholder="Verify Password"><br>
-	   		<button type="submit" name="submit" class="btn">Sign Up</button>
+	   		<button type="submit" name="submit" class="btn">Sign Up</button><a href="login.php">Log in</a>
 	   	</form>
 	</div>
 
